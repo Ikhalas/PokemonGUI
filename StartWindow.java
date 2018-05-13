@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,15 +23,14 @@ import javax.swing.border.TitledBorder;
 
 
 public class StartWindow extends JFrame {
-    
- 
     Container c = getContentPane(); 
     JPanel cover = new JPanel();
     ArrayList<Pokemon> pokemons = new ArrayList<Pokemon>();
     Icon icon;
     JTextArea txArea;
     Random rand = new Random();
-    JTextArea stat;
+    JTextArea stat,hp;
+    Font largeFont = new Font("TimesRoman",Font.BOLD,30);
   
     
     public StartWindow (){
@@ -44,10 +44,7 @@ public class StartWindow extends JFrame {
         setSize(1700,800);
         cover.setLayout(new BorderLayout());
         setVisible(true);
-        
-        
     }
-    
     
     public void mainWindow(){
         
@@ -83,7 +80,7 @@ public class StartWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 cover.remove(label);
                 cover.remove(panel);
-                //********//
+                creditWindow();
             }
         });
          
@@ -95,16 +92,41 @@ public class StartWindow extends JFrame {
                 
             }
         });
-        
+        pack();
         setVisible(true);
    
     }
     
-    
-    
+    public void creditWindow(){
+        Font large = new Font("TimesRoman",Font.BOLD,20);
+        JLabel head = new JLabel("Made by : IKHALAS",JLabel.CENTER);
+        head.setFont(largeFont);
+        
+        JButton bt = new JButton("Back");
+        bt.setFont(large);
+        
+         bt.addActionListener(new ActionListener() { //pikachu
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cover.remove(head);
+                cover.remove(bt);
+                mainWindow();
+                
+            }
+        });
+         
+        cover.add(head,BorderLayout.CENTER);
+        cover.add(bt,BorderLayout.SOUTH);
+        c.add(cover);
+        
+        setVisible(true);
+    }
     
     public void chooseWindow(){
+        
         JLabel label = new JLabel("Choose your Partner",JLabel.CENTER);
+        label.setFont(largeFont);
+        label.setForeground(Color.BLUE);
         Icon poke1 =  new ImageIcon(getClass().getResource("Pikachu1.jpg"));
         Icon poke11 =  new ImageIcon(getClass().getResource("Pikachu2.jpg"));
         Icon poke2 =  new ImageIcon(getClass().getResource("Diglett1.jpg"));
@@ -134,6 +156,8 @@ public class StartWindow extends JFrame {
         bigpanel.add(panel1);
         bigpanel.add(panel2);
         bigpanel.add(panel3);
+        
+        label.setBorder(new TitledBorder("New Game"));
         
         bt1.addActionListener(new ActionListener() { //pikachu
             @Override
@@ -173,11 +197,12 @@ public class StartWindow extends JFrame {
         
         
     }
-    
-    
+       
     public void pokeProfile(int i){
         
             JLabel label = new JLabel("New Profile",JLabel.CENTER);
+            label.setFont(largeFont);
+            label.setForeground(Color.BLUE);
             
             JLabel imglabel = new JLabel("",JLabel.CENTER);
             Icon poke =  new ImageIcon(getClass().getResource("Pika.png"));
@@ -228,6 +253,7 @@ public class StartWindow extends JFrame {
             cover.add(imglabel,BorderLayout.CENTER);
             cover.add(panel,BorderLayout.SOUTH);
             c.add(cover);
+            
             setVisible(true);
             
             
@@ -241,17 +267,19 @@ public class StartWindow extends JFrame {
         this.icon = icon;
         
         JButton bt1 = new JButton("EAT");
-       
+        JButton bt2 = new JButton("EXERCISE");
         JButton bt3 = new JButton("FIGHT!!");
         JPanel btpanel = new JPanel();
         btpanel.setLayout(new FlowLayout());
         btpanel.add(bt1);
-      
+        btpanel.add(bt2);
         btpanel.add(bt3);
+        btpanel.setBorder(new TitledBorder("Do something"));
         
         
         txArea = new JTextArea(10,30);
-       
+        
+        JLabel nickname = new JLabel("NICKNAME: ");
                 
                 
         JLabel img = new JLabel();
@@ -259,6 +287,7 @@ public class StartWindow extends JFrame {
         
         JTextArea name = new JTextArea(1,15);
         JPanel panel = new JPanel();
+        panel.add(nickname);
         panel.add(name);
         
         JPanel txpanel = new JPanel();
@@ -271,12 +300,19 @@ public class StartWindow extends JFrame {
         
       
          txArea.setText(print(pokemons,i));
-         name.setText("NICKNAME :"+pokemons.get(i).getName());
+         name.setText(pokemons.get(i).getName());
        
          bt1.addActionListener(new ActionListener() { //eat
             @Override
             public void actionPerformed(ActionEvent e) {
                 Eat(i);
+            }
+        });
+         
+         bt2.addActionListener(new ActionListener() { //fight
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Exercise(i);
             }
         });
          
@@ -291,14 +327,13 @@ public class StartWindow extends JFrame {
             }
         });
          
- 
         cover2.add(txArea);
         cover2.add(txpanel);
         cover.add(btpanel,BorderLayout.NORTH);
         cover.add(cover2,BorderLayout.CENTER);
         c.add(cover);
         
-        
+        pack();
         setVisible(true);
         
      
@@ -306,12 +341,17 @@ public class StartWindow extends JFrame {
     
     
     public void fightWindow(int i,Icon icon){
+        
+        JLabel label = new JLabel("DANGER!! We found mysterious Pokémon",JLabel.CENTER);
+        label.setFont(largeFont);
+        label.setForeground(Color.RED);
         JPanel panel1 = new JPanel();
         panel1.setLayout(new FlowLayout());
         JPanel panel2 = new JPanel();
         panel2.setLayout(new FlowLayout());
         
         stat = new JTextArea(1,20);
+        hp = new JTextArea(1,8);
         
         Icon Mpoke =  new ImageIcon(getClass().getResource("Mpoke.png"));
         JLabel Mpoke1=new JLabel(Mpoke);
@@ -329,7 +369,7 @@ public class StartWindow extends JFrame {
         panel1.add(vs1);
         panel1.add(Mpoke1);
         
-        
+        panel2.add(hp);
         panel2.add(stat);
         panel2.add(bt1);
         panel2.add(bt2);
@@ -340,6 +380,7 @@ public class StartWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Attack (i);
                 if(pokemons.get(i).health == 0){
+                  cover.remove(label);  
                   cover.remove(panel1);
                   cover.remove(panel2);
                   deadWindow();
@@ -347,7 +388,7 @@ public class StartWindow extends JFrame {
             }
         });
          
-         bt2.addActionListener(new ActionListener() { //atk
+         bt2.addActionListener(new ActionListener() { //back
             @Override
             public void actionPerformed(ActionEvent e) {
                 cover.remove(panel1);
@@ -356,35 +397,36 @@ public class StartWindow extends JFrame {
                
             }
         });
-        
-        
-        cover.add(panel1,BorderLayout.NORTH);
+         
+        cover.add(label,BorderLayout.NORTH);
+        cover.add(panel1,BorderLayout.CENTER);
         cover.add(panel2,BorderLayout.SOUTH);
-        
         c.add(cover);
-        
-        setVisible(true);
-        
-        
-        
-        
-        
+        pack();
+        setVisible(true);   
     }
     
     public void Attack (int index){
         int random = rand.nextInt(2);
         
         if(random == 0){
+            pokemons.get(index).setExp(rand.nextInt(10));
             stat.setText("YOU WIN !!");
+            hp.setText("Health : "+pokemons.get(index).getHealth());           
         } 
         if(random == 1){
             stat.setText("YOU LOSE !! Your Pokemon is injured. ");
             pokemons.get(index).reducedHealth(rand.nextInt(30));
+            hp.setText("Health : "+pokemons.get(index).getHealth());
    
         }
     }
     
-
+    public void Exercise(int index){
+        pokemons.get(index).setExp(rand.nextInt(3));
+        pokemons.get(index).reducedWeight(rand.nextInt(10));
+        txArea.setText(print(pokemons,index));
+    }
     
     public void Eat(int index){
         Foods berry = new Foods(1);
@@ -392,21 +434,39 @@ public class StartWindow extends JFrame {
         txArea.setText(print(pokemons,index));
         
     }
-    
-
-    public String print(ArrayList<Pokemon> pokemons,int index){
+   
+    public String print(ArrayList<Pokemon> pokemons,int index){    
         String hp = " ======== Pokemon ======== \n"+"  Health: "+pokemons.get(index).getHealth()+"/"+pokemons.get(index).maxHealth;
-        String weight = "\n  Weight: "+pokemons.get(index).getWeight()+"/100.0";        
-        return hp+weight;
+        String weight = "\n  Weight: "+pokemons.get(index).getWeight()+"/100.0"; 
+        String exp = "\n  Exp: "+pokemons.get(index).getExp()+"/999"; 
+        return hp+weight+exp;
     }
     
     public void deadWindow(){
-        JLabel text = new JLabel(" Your Pokemon dies TT");
+        Font large = new Font("TimesRoman",Font.BOLD,50);
+        Font btlarge = new Font("TimesRoman",Font.BOLD,20);
+        JLabel text = new JLabel(" Your Pokemon dies ",JLabel.CENTER);
+        text.setFont(large);
+        text.setForeground(Color.RED);
+        
+        JButton bt = new JButton("Back to Main Menu");
+        bt.setFont(btlarge);
+        
+        bt.addActionListener(new ActionListener() { //atk
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              cover.remove(text);
+              cover.remove(bt);
+              chooseWindow();
+            }
+        });
+        
         
         cover.add(text,BorderLayout.CENTER);
+        cover.add(bt,BorderLayout.SOUTH);
         c.add(cover);
         
-        chooseWindow();
+        
         setVisible(true);
     }
     

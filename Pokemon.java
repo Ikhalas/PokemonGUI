@@ -6,13 +6,16 @@ public class Pokemon{
 	public final double maxHealth;
 	protected double health,weight;
 	protected String name;
+        protected int exp;
+   
 	
 
-	public Pokemon(String name, double maxHealth,double weight){
+	public Pokemon(String name, double maxHealth,double weight,int exp){
 		this.name      = name;
 		this.health    = (int)maxHealth;
-		this.maxHealth = (int)maxHealth;
+		this.maxHealth = (int)maxHealth;  
                 this.weight    = (int)weight;
+                this.exp       =  exp;
 	}
         
         public double getWeight(){
@@ -30,7 +33,15 @@ public class Pokemon{
         public void setName(String name){
                 this.name = name;
         }
-	
+        
+        public int getExp(){
+		return this.exp;
+	}
+        
+        public void setExp(int value){
+                this.exp += value ;
+        }
+        
 	public void eat(Foods berry){
 		this.health += berry.getRestoreValue();
 		if(this.health > this.maxHealth)
